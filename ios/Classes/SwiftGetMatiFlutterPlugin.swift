@@ -36,10 +36,10 @@ public class SwiftGetMatiFlutterPlugin: NSObject, FlutterPlugin {
 
 extension SwiftGetMatiFlutterPlugin: MFKYCDelegate {
     public func mfKYCLoginSuccess(identityId: String) {
-        bundleGetMatiFlutterResult(["identityId": identityId])
+        bundleGetMatiFlutterResult(["verificationId": identityId, "status": "failure"])
     }
     
     public func mfKYCLoginCancelled() {
-        bundleGetMatiFlutterResult(nil)
+        bundleGetMatiFlutterResult(["status": "failure"])
     }
 }
