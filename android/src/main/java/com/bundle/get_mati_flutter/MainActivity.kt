@@ -6,13 +6,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bundle.get_mati_flutter.models.BundleData
 import com.bundle.get_mati_flutter.models.INTENT_PARAMS_KEY
-import com.matilock.mati_kyc_sdk.ARG_VERIFICATION_ID
-import com.matilock.mati_kyc_sdk.MatiButton
+import com.bundle.get_mati_flutter.views.BundleMatiButton
+import com.matilock.mati_kyc_sdk.*
 import com.matilock.mati_kyc_sdk.kyc.KYCActivity
 import io.flutter.plugin.common.MethodChannel
 
 
-class MainActivity : AppCompatActivity() { 
+class MainActivity : AppCompatActivity() {
     private var resultMap = HashMap<String, String>()
     private var hasSubmittedResponse = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setUpButton(bundleData!!)
 
     }
-    
+
     private fun setUpButton(bundleData: BundleData) {
         val clientId: String = bundleData.clientId
         val flowId: String? = bundleData.flowId
@@ -37,12 +37,12 @@ class MainActivity : AppCompatActivity() {
                 metaBuilder.with(key, metadata[key]!!)
             }
         }
-        findViewById<MatiButton>(R.id.matiKYCButton).setParams(
+        val matiBtn = findViewById<BundleMatiButton>(R.id.matiKYCButton)
+        matiBtn.setParams(
                 clientId,
                 flowId,
                 buttonTitle,
                 metaBuilder.build())
-        findViewById<MatiButton>(R.id.matiKYCButton).performClick()
     }
 
     companion object {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun returnSuccess(verificationId: String) {
-        if(!hasSubmittedResponse) {
+        if (!hasSubmittedResponse) {
             resultMap["status"] = "success"
             resultMap["verificationId"] = verificationId
             flutterChannelResult?.success(resultMap)
@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-    
+
     private fun returnFailure() {
-        if(!hasSubmittedResponse) {
+        if (!hasSubmittedResponse) {
             resultMap.clear()
             resultMap["status"] = "failure"
             flutterChannelResult?.success(resultMap)
@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == KYCActivity.REQUEST_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == KYCActivity.REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 returnSuccess(data?.getStringExtra(ARG_VERIFICATION_ID)!!)
             } else {
                 returnFailure()
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if(resultMap.isEmpty()) {
+        if (resultMap.isEmpty()) {
             returnFailure()
         }
     }
