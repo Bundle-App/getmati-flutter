@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.matilock.mati_kyc_sdk.MatiButton
-
+    <com.bundle.get_mati_flutter.views.BundleMatiButton
         android:id="@+id/matiKYCButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
