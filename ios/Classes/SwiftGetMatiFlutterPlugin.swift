@@ -5,6 +5,7 @@ import MatiGlobalIDSDK
 public class SwiftGetMatiFlutterPlugin: NSObject, FlutterPlugin {
     var bundleGetMatiFlutterResult: FlutterResult!
     let button = MFKYCButton()
+    var hasCalledListener = false
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "get_mati_flutter", binaryMessenger: registrar.messenger())
     let instance = SwiftGetMatiFlutterPlugin()
@@ -28,9 +29,17 @@ public class SwiftGetMatiFlutterPlugin: NSObject, FlutterPlugin {
             MFKYC.register(clientId: clientId, metadata: metadata)
             MFKYC.instance.delegate = self
             self.button.flowId = flowId
-            self.button.sendActions(for: .touchUpInside)
+            NSLog("startVerification DispatchQueue")
+            if(!self.hasCalledListener) {
+                self.button.sendActions(for: .touchUpInside)
+                self.hasCalledListener = true
+            }
         }
     }
+  }
+
+  public func dispatchFUnc() {
+
   }
 }
 
