@@ -29,17 +29,12 @@ public class SwiftGetMatiFlutterPlugin: NSObject, FlutterPlugin {
             MFKYC.register(clientId: clientId, metadata: metadata)
             MFKYC.instance.delegate = self
             self.button.flowId = flowId
-            NSLog("startVerification DispatchQueue")
             if(!self.hasCalledListener) {
                 self.button.sendActions(for: .touchUpInside)
                 self.hasCalledListener = true
             }
         }
     }
-  }
-
-  public func dispatchFUnc() {
-
   }
 }
 
